@@ -10,7 +10,6 @@ using namespace std;
 
 int main() {
 	ChessGUI theGui;
-	theGui.welcomeToChess();
 	int selection = 0;
 	cout << "Welcome To Chess" << endl;
 	chess* theBoard = new chess();
@@ -18,9 +17,11 @@ int main() {
 
 	while(true) {
 		cout << "Please Select A Menu Option: " << endl;
-		cout << "1) Quick Play\n2) Custom Match\n3) Tutorials\n4) Exit" << endl;
+		cout << "1) Quick Play\n2) Custom Match\n3) Tutorials\n4) Options\n5) Exit" << endl;
 		cin >> selection;
 		int x1,x2,y1,y2;
+		int userInput = 0;
+		int numCustomMatchLoops = 0;
 		char x1C, x2C;
 		CustomMatch customMatch;
     string tempX1, tempX2;
@@ -34,11 +35,6 @@ int main() {
 					theBoard->getAllMoves('w');
 					bool gettingMove = true;
 					cout << "White's turn" << endl;
-					if (theBoard->checkForCheckmate('w'))
-					{
-						cout << "White is in checkmate, black wins!" << endl;
-						return 0;
-					}
 					while(gettingMove)
 					{
 						cout << "Inital Column: ";
@@ -57,10 +53,10 @@ int main() {
             {
               if(cin.fail())
               {
-                cout << "Please enter a valid row number: ";
+                cout << "Bruh, learn how to chess... the ROW is a NUMBER, please enter a new one: " << endl;
               }
               else {
-                cout <<"Please enter a valid row number: ";
+                cout <<"Number entered is not in range 1 to 8. Enter new row value:";
               }
               cin.clear();
               cin.ignore(1000,'\n');
@@ -88,10 +84,10 @@ int main() {
             {
               if(cin.fail())
               {
-                cout << "Please enter a valid row number: ";
+                cout << "Bruh, learn how to chess... the ROW is a NUMBER, please enter a new one: " << endl;
               }
               else {
-                cout <<"Please enter a valid row number: ";
+                cout <<"Number entered is not in range 1 to 8. Enter new row value:";
               }
               cin.clear();
               cin.ignore(1000,'\n');
@@ -111,7 +107,7 @@ int main() {
 								}
 								else
 								{
-									theBoard->move(7,0,7,3,'w');
+									theBoard->move(7,0,7,2,'w');
 									theGui.printChessGUI(theBoard->getBoard());
 									gettingMove = false;
 								}
@@ -139,11 +135,6 @@ int main() {
 					}
 					gettingMove = true;
 					cout << "Black's turn" << endl;
-					if (theBoard->checkForCheckmate('b'))
-					{
-						cout << "Black is in checkmate, white wins!" << endl;
-						return 0;
-					}
 					theBoard->getAllMoves('b');
           while(gettingMove)
 					{
@@ -165,10 +156,10 @@ int main() {
             {
               if(cin.fail())
               {
-                cout << "Please enter a valid row number: ";
+                cout << "Bruh, learn how to chess... the ROW is a NUMBER, please enter a new one: " << endl;
               }
               else {
-                cout <<"Please enter a valid row number: ";
+                cout <<"Number entered is not in range 1 to 8. Enter new row value:";
               }
               cin.clear();
               cin.ignore(1000,'\n');
@@ -191,10 +182,10 @@ int main() {
             {
               if(cin.fail())
               {
-                cout << "Please enter a valid row number: ";
+                cout << "Bruh, learn how to chess... the ROW is a NUMBER, please enter a new one: " << endl;
               }
               else {
-                cout <<"Please enter a valid row number: ";
+                cout <<"Number entered is not in range 1 to 8. Enter new row value:";
               }
               cin.clear();
               cin.ignore(1000,'\n');
@@ -214,7 +205,7 @@ int main() {
 								}
 								else
 								{
-									theBoard->move(0,0,0,3,'b');
+									theBoard->move(0,0,0,2,'b');
 									theGui.printChessGUI(theBoard->getBoard());
 									gettingMove = false;
 								}
@@ -246,7 +237,23 @@ int main() {
 			break;
 
 			case 2:
-					customMatch.beginTimedMatch();
+					customMatch.printCustomMatchMenu();
+					cin >> userInput;
+					while(cin.fail() || userInput < 1 || userInput > 4)
+					{
+						if(cin.fail())
+						{
+							cout << "Bruh, learn how to read... clearly you need to enter a number: " << endl;
+						}
+						else {
+							cout <<"Number entered is not in range 1 to 4. Enter a new value: ";
+						}
+						cin.clear();
+						cin.ignore(1000,'\n');
+
+						cin >> userInput;
+					}
+					customMatch.generateCustomMatch(userInput);
 			break;
 
 			case 3:
@@ -254,10 +261,12 @@ int main() {
 			    tutorials();
 			break;
 
-			case 4: //Exits the program
-				return(0);
+			case 4:
 			break;
 
+			case 5:
+			//Exit the Program
+				return(0);
 			default:
 			//The user entered an invalid option
 			cout << "Invalid Option, Please make a Valid Selection" << endl;
